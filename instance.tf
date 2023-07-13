@@ -1,11 +1,13 @@
 provider "aws" {
-    region = "us-east-1"
+    region = var.aws_region
 }
 
 resource "aws_instance" "web" {
-    ami = "ami-06ca3ca175f37dd66"
-    instance_type = "t2.micro"
- 
+    ami = data.aws_ami.amzlinux2.id
+    instance_type = var.instance_type
+    key_name = var.instance_keypair
+    vpc_security_group_ids = [aws_security_group.my_sg.id]
+
     tags = {
     Name = "Terraform Demo"
 }
